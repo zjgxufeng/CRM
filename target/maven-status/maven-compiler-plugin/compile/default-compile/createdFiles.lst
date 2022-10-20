@@ -1,2 +1,12 @@
+com\xufeng\crm\settings\contants\Contants.class
+com\xufeng\crm\settings\mapper\UserMapper.class
+com\xufeng\crm\settings\common\util\DateUtils.class
+com\xufeng\crm\settings\common\domain\ReturnObject.class
 com\xufeng\crm\settings\web\controller\UserController.class
+com\xufeng\crm\settings\domain\User.class
 com\xufeng\crm\web\controller\IndexController.class
+com\xufeng\crm\settings\service\UserService.class
+com\xufeng\crm\settings\common\util\HSSFUtils.class
+com\xufeng\crm\settings\service\impl\UserServiceImpl.class
+com\xufeng\crm\workbench\web\controller\WorkbenchController.class
+com\xufeng\crm\settings\common\util\UUIDUtils.class

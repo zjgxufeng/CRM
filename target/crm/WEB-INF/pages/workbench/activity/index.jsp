@@ -160,9 +160,7 @@
                     alert("只能选择一条市场活动!");
                     return;
                 }
-                alert("1");
                 var id = checkCount.get(0).value;
-                alert("2");
                 //发动异步请求,填满表单
                 $.ajax({
                     url: 'workbench/activity/queryActivityById.do',
@@ -170,7 +168,6 @@
                     type: 'post',
                     dataType: 'json',
                     success: function (data) {
-                        alert("成功请求");
                         $("#edit-id").val(data.id);
                         $("#edit-marketActivityOwner").val(data.owner);
                         $("#edit-marketActivityName").val(data.name);
@@ -184,7 +181,7 @@
                 });
             });
 
-            //点击更新
+            //点击更新saveEditActivityBtn
             $("#saveEditActivityBtn").click(function () {
                 var id = $("#edit-id").val();
                 var owner = $("#edit-marketActivityOwner").val();
@@ -196,7 +193,7 @@
                 $.ajax({
                     url: 'workbench/activity/updateActivityById.do',
                     data: {
-                        id:id,
+                        id: id,
                         owner: owner,
                         name: name,
                         startDate: startDate,
@@ -212,6 +209,47 @@
                             queryActivityByConditionForPage(1, $("#demo_pag1").bs_pagination('getOption', 'rowsPerPage'));
                         } else {
                             alert(data.message);
+                        }
+                    }
+                });
+            });
+
+            //批量导出按钮添加事件
+            $("#exportActivityAllBtn").click(function () {
+                window.location.href = 'workbench/activity/exportAllActivitys.do';
+            });
+
+            //批量导入
+            $("#importActivityBtn").click(function () {
+                var activityFileName = $("#activityFile").val();
+                var suffix = activityFileName.substr(activityFileName.lastIndexOf(".") + 1).toLocaleLowerCase();
+                if(suffix!="xls"){
+                    alert("必须是xls文件");
+                    return;
+                }
+                var activityFile = $("#activityFile")[0].files[0];
+                if(activityFile.size>5*1024*1024){
+                    alert("文件不能超过5Mb");
+                    return;
+                }
+                var formData =new FormData();
+                formData.append("activityFile",activityFile);
+                formData.append("userName","张三");
+                $.ajax({
+                    url: 'workbench/activity/importActivity.do',
+                    data: formData,
+                    processData:false,
+                    contentType:false,
+                    type: 'post',
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.code=="1"){
+                            alert("成功导入"+data.retData+"条记录!");
+                            $("#importActivityModal").modal("hide");
+                            queryActivityByConditionForPage(1, $("#demo_pag1").bs_pagination('getOption', 'rowsPerPage'));
+                        }else{
+                            alert(data.message);
+                            $("#importActivityModal").modal("show");
                         }
                     }
                 });
@@ -385,7 +423,7 @@
                         <label for="edit-marketActivityOwner" class="col-sm-2 control-label">所有者<span
                                 style="font-size: 15px; color: red;">*</span></label>
                         <div class="col-sm-10" style="width: 300px;">
-                            <select class="form-control" id="edit-marketActivityOwner" >
+                            <select class="form-control" id="edit-marketActivityOwner">
                                 <c:forEach items="${requestScope.userList}" var="user">
                                     <option value="${user.id}">${user.name}</option>
                                 </c:forEach>
@@ -412,7 +450,7 @@
                     <div class="form-group">
                         <label for="edit-cost" class="col-sm-2 control-label">成本</label>
                         <div class="col-sm-10" style="width: 300px;">
-                            <input type="text" class="form-control" id="edit-cost" value="500" >
+                            <input type="text" class="form-control" id="edit-cost" value="500">
                         </div>
                     </div>
 
@@ -532,7 +570,7 @@
                 </button>
             </div>
             <div class="btn-group" style="position: relative; top: 18%;">
-                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#importActivityModal">
+                <button type="button" class="btn btn-default"  data-toggle="modal"data-target="#importActivityModal" id="importActivityAllBtn">
                     <span class="glyphicon glyphicon-import"></span> 上传列表数据（导入）
                 </button>
                 <button id="exportActivityAllBtn" type="button" class="btn btn-default"><span

@@ -18,4 +18,10 @@ public interface ActivityService {
     Activity queryActivityById(String id);
 
     int updateActivityById(Activity activity);
+
+    List<Activity> queryAllActivitys();
+
+    int saveCreateActivityByList(List<Activity> activityList);
+
+    Activity queryActivityForDetail(String id);
 }

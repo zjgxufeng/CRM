@@ -85,7 +85,7 @@ public interface ActivityMapper {
     int deleteActivityByIds(String[] ids);
 
     /**
-     * 通过1id查询一条市场活动
+     * 通过id查询一条市场活动
      * @param id
      * @return
      */
@@ -97,4 +97,23 @@ public interface ActivityMapper {
      * @return
      */
     int updateActivityById(Activity activity);
+
+    /**
+     * 查询所有活动
+     * @return
+     */
+    List<Activity> selectAllActivitys();
+
+    /**
+     * 通过活动列表插入活动数组
+     * @param activityList
+     * @return
+     */
+    int insertActivityByList(List<Activity> activityList);
+
+    /**
+     * 查询活动明细
+     * @return
+     */
+    Activity selectActivityForDetailById(String id);
 }
